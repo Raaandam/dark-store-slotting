@@ -1,0 +1,37 @@
+# Dark-store slotting run parameters
+
+data:
+  # Instacart Market Basket files (Kaggle: "instacart-market-basket-analysis")
+  orders: data/raw/orders.csv
+  order_products: data/raw/order_products__prior.csv
+  products: data/raw/products.csv
+  top_n_skus: 2000          # slot only the fastest-moving N SKUs
+  max_orders: 300000        # cap on orders read, for laptop-sized runs
+  holdout_fraction: 0.15    # orders kept aside to evaluate layouts
+  seed: 42
+
+layout:
+  aisles: 10                # parallel pick aisles
+  bays_per_side: 10         # bays along each side of an aisle
+  levels: [1, 2, 3, 4]      # shelf levels, 2-3 are the golden zone
+  golden_levels: [2, 3]
+  slots_per_level: 3        # SKUs per bay level (10 x 2 x 10 x 4 x 3 = 2,400 slots)
+  aisle_length_m: 20.0
+  aisle_spacing_m: 3.0
+  cross_aisle_m: 2.0        # depth of the front and back cross aisles
+  pack_station: [0.0, -2.0] # (x, y) in metres, in front of aisle 1
+
+abc:
+  a_share: 0.80             # cumulative pick share for class A
+  b_share: 0.95             # cumulative pick share for class B
+
+slotting:
+  affinity_min_support: 50  # minimum co-picks for a pair to count
+  max_aisle_pick_share: 0.35  # congestion cap per aisle
+  solver_time_limit_s: 60   # cluster size is one bay's capacity: levels x slots_per_level
+
+picking:
+  walk_speed_mps: 1.0
+  seconds_per_line: 8.0     # search + grab + scan per order line
+  seconds_per_order: 20.0   # tote setup and drop-off at pack station
+  routing: [s_shape, largest_gap]

@@ -1,0 +1,20 @@
+[build-system]
+requires = ["setuptools>=64"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "dark-store-slotting"
+version = "0.1.0"
+description = "SKU slotting and pick-path optimisation for a quick-commerce dark store"
+authors = [{ name = "Mayank Sharma" }]
+license = { text = "MIT" }
+requires-python = ">=3.10"
+
+[project.scripts]
+dark-store-slotting = "slotting.pipeline:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
